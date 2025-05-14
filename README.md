@@ -105,7 +105,5 @@ EcoMarket is a full-stack web application that allows conscious consumers and ec
 ## 📄 License
 
 MIT – Free to use and modify for educational purposes.
-
-```
 ---
 
