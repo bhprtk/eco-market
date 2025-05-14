@@ -2,19 +2,15 @@
 
 import ProductTabs from "./ProductTabs";
 import ClientActions from "./ClientActions";
-import ProductChatBox from "./ProductChatBox";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+
 
 
 
 
 export default function ProductClientWrapper({ product, seller }) {
-  const searchParams = useSearchParams();
-const showInitialChat = searchParams.get("chat") === "true";
-const [showChat, setShowChat] = useState(showInitialChat);
+ 
 
-  
+
   return (
     <div>
 
@@ -88,16 +84,9 @@ const [showChat, setShowChat] = useState(showInitialChat);
           <ClientActions
             sellerId={product.sellerId}
             productId={product.id}
-            setShowChat={setShowChat}
-            showChat={showChat}
+           
           />
-          {showChat && (
-            <ProductChatBox
-              sellerId={product.sellerId}
-              productId={product.id}
-              onClose={() => setShowChat(false)}
-            />
-          )}
+         
 
         </div>
       </main>
@@ -105,10 +94,7 @@ const [showChat, setShowChat] = useState(showInitialChat);
         <ProductTabs product={product} />
       </div>
 
-      {/* <div className="max-w-6xl mx-auto px-4">
-        <ProductTabs product={product} />
-
-      </div> */}
+    
     </div>
   );
 }

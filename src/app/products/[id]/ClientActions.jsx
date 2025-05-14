@@ -8,8 +8,6 @@ import { getOrCreateChat } from "../../../lib/chatUtils";
 export default function ClientActions({
   sellerId,
   productId,
-  showChat,
-  setShowChat,
 }) {
   const router = useRouter();
   const [user, setUser] = useState(null);
