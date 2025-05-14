@@ -104,8 +104,8 @@ export default function ProfilePage() {
 								alt={product.title}
 								className="w-full h-64 object-contain rounded mb-2"
 							/>
-							<h3 className="text-lg font-medium">{product.title}</h3>
-							<p className="text-green-700 font-bold">${product.price.toFixed(2)}</p>
+							<h2 className="text-2xl font-semibold mt-4">{product.title}</h2>
+							<p className="text-2xl mt-2">${product.price.toFixed(2)}</p>
 						</div>
 					</Link>
 				))}

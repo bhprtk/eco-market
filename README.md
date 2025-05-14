@@ -1,36 +1,111 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🌿 EcoMarket – Sustainable Online Marketplace
 
-## Getting Started
+EcoMarket is a full-stack web application that allows conscious consumers and eco-friendly small businesses to connect, list, and shop for sustainable products. Built with a strong emphasis on ethics, environmental awareness, and accessibility.
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🛠️ Tech Stack
+
+- **Frontend:** Next.js 15 (App Router), Tailwind CSS
+- **Backend:** Firebase Firestore, Firebase Authentication, Firebase Storage
+- **Authentication:** Google Sign-In / Email & Password
+- **Hosting:** Vercel, Firebase
+- **Deployment Ready:** Yes
+
+
+## ✅ Features
+
+- User authentication (sign up, login, logout)
+- Create and manage eco-friendly product listings
+- Upload product images and detailed sustainability fields
+- View detailed product pages
+- Product-specific real-time chat between buyer and seller
+- Profile page with user info and listing history
+- Responsive and modern UI with Tailwind CSS
+
+## 🚀 How to Run Locally
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/your-username/ecomarket.git
+   cd ecomarket
+	 ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Set up Firebase credentials**
+   Create a `.env.local` file in the root directory with the following (example only):
+
+   ```
+   NEXT_PUBLIC_FIREBASE_API_KEY=your-api-key
+   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-auth-domain
+   NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
+   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-storage-bucket
+   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
+   NEXT_PUBLIC_FIREBASE_APP_ID=your-app-id
+   ```
+
+4. **Run the development server**
+
+   ```bash
+   npm run dev
+   ```
+
+5. **Visit**
+
+   ```
+   http://localhost:3000
+   ```
+
+
+## 👤 User Guide
+
+### Sign Up / Login
+
+* Click "Login" from the navbar.
+* Sign in with Google.
+* Your user profile is automatically created.
+
+### Add Product
+
+* Click **Sell**.
+* Fill out the form with product title, price, image, and sustainability credentials.
+* Submit to post the product.
+
+### Start Chat
+
+* Go to any product page.
+* Click **Start Chat** to message the seller directly.
+* Only one chat per buyer/seller/product is allowed.
+
+### Profile Page
+
+* Access your personal dashboard at `/profile`.
+* See your profile info and your posted listings.
+* You can logout from this page.
+
+
+## 📦 Deployment Notes
+
+* This app is deployed using **Vercel**.
+* Firebase Firestore rules protect user data and restrict chat visibility between buyer and seller.
+* Realtime chat uses Firestore's `onSnapshot()` listeners.
+
+
+## 🤝 Contributors
+
+* Pratik Bhandari – Full-stack development, database integration, chat system
+* Gabriel Danekari – Firebase integration, Firestore rules, authentication, image uploads
+* Swan Pyae Sone Tun – UI/UX, handled design consistency, responsive layout, and testing.
+
+
+## 📄 License
+
+MIT – Free to use and modify for educational purposes.
+
 ```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
