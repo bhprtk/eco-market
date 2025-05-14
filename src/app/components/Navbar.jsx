@@ -3,20 +3,39 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../context/AuthContext";
-import { auth, provider } from "../../lib/firebase";
-import { signInWithPopup, signOut } from "firebase/auth";
-import { useState } from "react";
+import { auth, provider, db } from "../../lib/firebase";
+import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+
+
 
 
 export default function Navbar() {
   const { user } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
+
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
 
 
   const handleLogin = async () => {
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      // Store or update user in Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        name: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        createdAt: serverTimestamp(),
+      }, { merge: true }); // merge = keep existing data
+
+      router.push("/");
     } catch (err) {
       console.error("Login error:", err);
     }
@@ -38,28 +57,56 @@ export default function Navbar() {
       await handleLogin(); // trigger login popup
     }
   };
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("User:", user);
+
+        // setUser(user);  // user.photoURL will be valid
+      } else {
+        // setUser(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+  const NavLink = ({ href, label }) => {
+    const isActive = pathname === href;
+
+    return (
+      <Link
+        href={href}
+        className={`px-2 py-1 rounded transition duration-150 ${isActive
+          ? "text-green-800 font-semibold border-b-2 border-green-800"
+          : "text-gray-800 hover:text-green-600"
+          }`}
+      >
+        {label}
+      </Link>
+    );
+  };
 
   return (
     <nav className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50 h-25 py-4">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="text-4xl font-bold text-green-800">
-          EcoMarket
-        </Link>
+        <div className="flex items-center gap-10">
+          <Link href="/" className="text-4xl font-bold text-green-800">
+            EcoMarket
+          </Link>
 
-        <div className="hidden md:flex gap-6 items-center text-gray-800 text-xl">
-          <Link href="/">Home</Link>
-          <Link href="/products">Browse</Link>
+          {user &&
+            <div className="hidden md:flex gap-6 items-center text-gray-800 text-xl">
+              {/* <NavLink href="/" label="Home" /> */}
+              <NavLink href="/products" label="Browse" />
+              <NavLink href="/products/new" label="Sell" />
+              <NavLink href="/chat" label="Chat" />
+              <NavLink href="/profile" label="Profile" />
 
-          {/* Sell Button */}
-          <button
-            onClick={handleSellClick}
-            className="cursor-pointer hover:text-green-600 transition"
-          >
-            Sell
-          </button>
+            </div>
+          }
 
-          <Link href="/chat">Chat</Link>
         </div>
+
 
         {user ? (
           <div className="relative">
@@ -67,39 +114,24 @@ export default function Navbar() {
               className="flex items-center gap-2 cursor-pointer"
               onClick={() => setDropdownOpen((prev) => !prev)}
             >
-              <img
-                src={user.photoURL}
-                alt={user.displayName}
-                className="w-8 h-8 rounded-full object-cover"
-              />
-              <span className="text-sm text-gray-800">{user.displayName}</span>
-              <span className="text-gray-500 text-lg">&#9662;</span> {/* caret */}
+              {user?.photoURL && (
+                <div className="w-10 h-10 overflow-hidden rounded-full">
+                  <img
+                    src={user.photoURL}
+                    alt={user.displayName || "User"}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+
+              <span className="text-xl text-gray-800">{user.displayName}</span>
             </div>
 
-            {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow z-50">
-                <Link
-                  href="/profile"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                >
-                  Profile
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                >
-                  Log Out
-                </button>
-              </div>
-            )}
+
           </div>
         ) : (
-          <button
-            onClick={handleLogin}
-            className="cursor-pointer bg-green-600 text-white px-4 py-2 rounded-xl text-sm hover:bg-green-700 transition"
-          >
-            Log In
-          </button>
+          <NavLink href="/login" label="Login" />
+
         )}
 
 

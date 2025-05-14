@@ -1,6 +1,11 @@
+"use client";
 import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
+
 
 export default function HomePage() {
+  const { user } = useAuth();
+
   return (
     <main className="min-h-screen bg-white text-gray-800">
       {/* Hero */}
@@ -21,7 +26,7 @@ export default function HomePage() {
                 Browse Products
               </Link>
               <Link
-                href="/products/new"
+                href={user ? "/products/new" : "/login"}
                 className="border border-green-800 text-green-700 px-6 py-3 rounded text-lg hover:bg-green-800 hover:text-white transition"
               >
                 Sell a Product
